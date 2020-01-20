@@ -19,8 +19,3 @@ y = df.iloc[:, -1].values
 clf = tree.DecisionTreeClassifier()
 model = clf.fit(x, y)
 y_hat = model.predict(x)
-
-# give me data to test:
-a = x[5]
-
-model.predict(a)
