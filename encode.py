@@ -3,26 +3,26 @@ class Encode:
         "آسان": "easy",
         "سخت": "difficult",
         "زیاد": "much",
-        "متوسط": "avg",
+        # # "متوسط": "avg
         "کم": "few",
         "بله": "yes",
         "خیر": "no",
         "بالا": "high",
         "پایین": "low",
-        "ضعیف": "weak",
-        "قوی": "strong",
+        "سست": "weak",
+        "متراکم": "strong",
         "دشت": "plain",
         "کوهستانی": "mountain",
         "تپه ماهور": "hill",
-        "بلند": "long",
-        "کوتاه": "short",
+        "مدت دار": "long",
+        "کوتاه مدت": "short",
     }
 
     _encode_dict = {
         "easy": 0,
         "difficult": 1,
         "much": 2,
-        "avg": 1,
+        # "avg": 1,
         "few": 0,
         "yes": 1,
         "no": 0,
@@ -38,6 +38,11 @@ class Encode:
     }
 
     def translate_list(self, entry_list):
+        """
+        This convert entry_list (a list of persian words) to English.
+        :param entry_list: List
+        :return: List in English
+        """
         translated_list = []
         for entry in entry_list:
             translated_list += [self._trans_dict[entry]]

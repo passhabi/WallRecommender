@@ -162,8 +162,8 @@ class Form:
         # running speed:
         label_combo2 = tkinter.Label(combos_frame, text="سرعت اجرا", fg="white", bg="black")
         combo2 = ttk.Combobox(combos_frame, textvariable=self.speed_combo_str, state="readonly")
-        combo2.config(values=['بلند', 'کوتاه'])
-        combo2.set("بلند")
+        combo2.config(values=['مدت دار', 'مدت'])
+        combo2.set("مدت دار")
         label_combo2.grid(row=0, column=1, sticky='ew')
         combo2.grid(row=1, column=1, sticky='ew')
 
@@ -178,8 +178,8 @@ class Form:
         # soil:
         label_combo4 = tkinter.Label(combos_frame, text="نوع خاک", fg="white", bg="black")
         combo4 = ttk.Combobox(combos_frame, textvariable=self.soil_combo_str, state="readonly")
-        combo4.config(values=['ضعیف', 'قوی'])
-        combo4.set("قوی")
+        combo4.config(values=['سست', 'متراکم'])
+        combo4.set("متراکم")
         label_combo4.grid(row=0, column=3, sticky='ew')
         combo4.grid(row=1, column=3, sticky='ew')
 
@@ -200,10 +200,10 @@ class Form:
         combo6.grid(row=3, column=2, sticky='ew')
 
         # Defence:
-        label_combo7 = tkinter.Label(combos_frame, text="پدافند", fg="white", bg="black")
+        label_combo7 = tkinter.Label(combos_frame, text="مقاومت دربرابر انفجار", fg="white", bg="black")
         combo7 = ttk.Combobox(combos_frame, textvariable=self.defence_combo_str, state="readonly")
-        combo7.config(values=['زیاد', 'متوسط', 'کم'])
-        combo7.set("متوسط")
+        combo7.config(values=['بله', 'خیر'])
+        combo7.set("خیر")
         label_combo7.grid(row=2, column=3, sticky='ew')
         combo7.grid(row=3, column=3, sticky='ew')
 
@@ -216,7 +216,7 @@ class Form:
         combo8.grid(row=3, column=4, sticky='ew')
 
         # visibility:
-        label_combo9 = tkinter.Label(combos_frame, text="دید", fg="white", bg="black")
+        label_combo9 = tkinter.Label(combos_frame, text="دیوار دید داشته باشد", fg="white", bg="black")
         label_combo9.grid(row=2, column=1, sticky='ew')
         combo9 = ttk.Combobox(combos_frame, textvariable=self.visibility_combo_str, state="readonly")
         combo9.config(values=['خیر', 'بله'])
@@ -240,6 +240,6 @@ class Form:
 if __name__ == '__main__':
     root = tkinter.Tk()
     root.title('Wall Prediction')
-    root.geometry("500x350")
+    root.geometry("650x350")
     form = Form(root)  # create an object.
     root.mainloop()
