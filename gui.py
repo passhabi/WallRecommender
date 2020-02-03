@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import ttk
-import model
+import main
 
 
 class Form:
@@ -132,7 +132,7 @@ class Form:
         # print(translated_list)
         # print(x_test)
         x_test = np.reshape(x_test, [1, -1])
-        y = model.ml.predict(x_test)[0]
+        y = main.ml.predict(x_test)[0]
 
         if y == 1:
             label.img1 = self.img1
