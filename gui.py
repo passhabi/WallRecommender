@@ -26,6 +26,12 @@ class Form:
 
         self.build_footer()
 
+        # import images:
+        self.img1 = tkinter.PhotoImage(file="img/pishsakhteh.png").subsample(2, 2)
+        self.img2 = tkinter.PhotoImage(file="img/darjariz.png").subsample(2, 2)
+        self.img3 = tkinter.PhotoImage(file="img/sim.png").subsample(2, 2)
+        self.img4 = tkinter.PhotoImage(file="img/bedonhefaz.png").subsample(2, 2)
+
     def build_grid(self):
         self.mainframe.columnconfigure(0, weight=1)
         self.mainframe.rowconfigure(0, weight=0)
@@ -129,13 +135,17 @@ class Form:
         y = model.ml.predict(x_test)[0]
 
         if y == 1:
-            label.config(text="دیوار پیش ساخته")
+            label.img1 = self.img1
+            label.config(text="دیوار پیش ساخته", image=label.img1, compound="left")
         if y == 2:
-            label.config(text="دیوار درجاریز")
+            label.img2 = self.img2
+            label.config(text="دیوار درجاریز", image=label.img2, compound="left""دیوار درجاریز")
         if y == 3:
-            label.config(text="سیم خاردار")
+            label.img3 = self.img3
+            label.config(text="سیم خاردار", image=label.img3, compound="left")
         if y == 4:
-            label.config(text="بدون حفاظ")
+            label.img4 = self.img4
+            label.config(text="بدون حفاظ", image=label.img4, compound="left")
 
     def build_combos(self):
         combos_frame = tkinter.Frame(self.mainframe, bg='black')
@@ -162,7 +172,7 @@ class Form:
         # running speed:
         label_combo2 = tkinter.Label(combos_frame, text="سرعت اجرا", fg="white", bg="black")
         combo2 = ttk.Combobox(combos_frame, textvariable=self.speed_combo_str, state="readonly")
-        combo2.config(values=['مدت دار', 'مدت'])
+        combo2.config(values=['مدت دار', 'کوتاه مدت'])
         combo2.set("مدت دار")
         label_combo2.grid(row=0, column=1, sticky='ew')
         combo2.grid(row=1, column=1, sticky='ew')
@@ -240,6 +250,7 @@ class Form:
 if __name__ == '__main__':
     root = tkinter.Tk()
     root.title('Wall Prediction')
-    root.geometry("650x350")
+    # root.geometry("650x550")
+    root.minsize(width=650, height=550)
     form = Form(root)  # create an object.
     root.mainloop()
