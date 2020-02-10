@@ -37,6 +37,13 @@ class Encode:
         "short": 1,
     }
 
+    _wall_decode_dict = {
+        1: " پیش ساخته",
+        2: "درجاریز",
+        3: "سیم خاردار",
+        4: "بدون حفاظ",
+    }
+
     def translate_list(self, entry_list):
         """
         This convert entry_list (a list of persian words) to English.
@@ -64,9 +71,9 @@ class Encode:
     def separate(self, entry_list: list):
         pass
 
-    def convert(self, entry: str):
+    def decode_wall_name(self, number: int):
         """
-        Encode the entry list for feeding to model.
-        :type entry: list
+        Encode the Integer
+        :type number: int
         """
-        pass
+        return self._wall_decode_dict[number]
