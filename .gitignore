@@ -130,3 +130,10 @@ dmypy.json
 
 #pycharm
 .idea/
+
+model_temp.py
+tuning_model.py
+dataset_50.xlsx
+/fonts/
+
+

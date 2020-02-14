@@ -3,6 +3,7 @@ from tkinter import ttk
 import model_temp
 from encode import Encode
 from numpy import reshape
+import time
 
 
 def set_footer(master):
@@ -13,8 +14,34 @@ def set_footer(master):
     """
     # master frame is a Label:
     footer_background = PhotoImage(file="img/footer.png")
-    master.image = footer_background
-    master.config(image=master.image)
+    master.img = footer_background
+    master.config(image=master.img)
+
+
+def loading(master, t):
+    # get all frames in list:
+    frames = [PhotoImage(file="img/loading.gif", format='gif -index %i' % i) for i in range(8)]
+
+    load_img_lbl = Label(master)
+    load_img_lbl.image = frames  # prevent deleting by garbage collector.
+    load_img_lbl.pack(pady=(60, 0))
+
+    tic = time.time()
+
+    def animate(idx):
+        load_img_lbl.configure(image=frames[idx])
+
+        idx = 0 if idx > 6 else idx + 1  # loop over i
+
+        # remove the loading after 't':
+        toc = time.time()
+        elapsed_time = toc - tic
+        if elapsed_time < t:
+            load_img_lbl.after(100, animate, idx)  # loop animation.
+        else:
+            load_img_lbl.pack_forget()
+
+    animate(0)
 
 
 class Gui:
@@ -105,9 +132,10 @@ class Gui:
         # row 1, importance:
         # query_frame.rowconfigure(0)
         label_combo1 = Label(query_frame, text="اهمیت منطقه", padx=10, font=self.font2)
-        combo1 = ttk.Combobox(query_frame, textvariable=self.importance_combo_str, state="readonly", font=self.font2)
+        combo1 = ttk.Combobox(query_frame, textvariable=self.importance_combo_str, state="readonly",
+                              font=self.font2)
         combo1.config(values=['بالا', 'پایین'], justify='right')
-        # combo1.set("بالا")
+        combo1.set("بالا")
         label_combo1.grid(row=0, column=1, sticky='e', pady=(50, 8))
         combo1.grid(row=0, column=0, pady=(50, 8))
 
@@ -116,16 +144,17 @@ class Gui:
         label_combo2 = Label(query_frame, text="سرعت اجرا", pady=8, padx=10, font=self.font2)
         combo2 = ttk.Combobox(query_frame, textvariable=self.speed_combo_str, state="readonly", font=self.font2)
         combo2.config(values=['مدت دار', 'کوتاه مدت'], justify='right')
-        # combo2.set("مدت دار")
+        combo2.set("مدت دار")
         label_combo2.grid(row=1, column=1, sticky='e')
         combo2.grid(row=1, column=0)
 
         # row 3, topography:
         # query_frame.rowconfigure(2)
         label_combo3 = Label(query_frame, text="توپوگرافی منطقه", pady=8, padx=10, font=self.font2)
-        combo3 = ttk.Combobox(query_frame, textvariable=self.topography_combo_str, state="readonly", font=self.font2)
+        combo3 = ttk.Combobox(query_frame, textvariable=self.topography_combo_str, state="readonly",
+                              font=self.font2)
         combo3.config(values=['دشت', 'کوهستانی', 'تپه ماهور'], justify='right')
-        # combo3.set("دشت")
+        combo3.set("دشت")
         label_combo3.grid(row=2, column=1, sticky='e')
         combo3.grid(row=2, column=0)
 
@@ -134,16 +163,17 @@ class Gui:
         label_combo4 = Label(query_frame, text="نوع خاک", pady=8, padx=10, font=self.font2)
         combo4 = ttk.Combobox(query_frame, textvariable=self.soil_combo_str, state="readonly", font=self.font2)
         combo4.config(values=['سست', 'متراکم'], justify='right')
-        # combo4.set("متراکم")
+        combo4.set("متراکم")
         label_combo4.grid(row=3, column=1, sticky='e')
         combo4.grid(row=3, column=0)
 
         # row 5, water level:
         # query_frame.rowconfigure(5)
         label_combo5 = Label(query_frame, text="سطح آب", pady=8, padx=10, font=self.font2)
-        combo5 = ttk.Combobox(query_frame, textvariable=self.waterLevel_combo_str, state="readonly", font=self.font2)
+        combo5 = ttk.Combobox(query_frame, textvariable=self.waterLevel_combo_str, state="readonly",
+                              font=self.font2)
         combo5.config(values=['بالا', 'پایین'], justify='right')
-        # combo5.set("بالا")
+        combo5.set("بالا")
         label_combo5.grid(row=4, column=1, sticky='e')
         combo5.grid(row=4, column=0)
 
@@ -152,7 +182,7 @@ class Gui:
         label_combo6 = Label(query_frame, text="تعداد نیروی اجرایی", pady=8, padx=10, font=self.font2)
         combo6 = ttk.Combobox(query_frame, textvariable=self.numForces_combo_str, state="readonly", font=self.font2)
         combo6.config(values=['زیاد', 'کم'], justify='right')
-        # combo6.set("زیاد")
+        combo6.set("زیاد")
         label_combo6.grid(row=5, column=1, sticky='e')
         combo6.grid(row=5, column=0)
 
@@ -161,25 +191,27 @@ class Gui:
         label_combo7 = Label(query_frame, text="مقاومت دربرابر انفجار", pady=8, padx=10, font=self.font2)
         combo7 = ttk.Combobox(query_frame, textvariable=self.defence_combo_str, state="readonly", font=self.font2)
         combo7.config(values=['بله', 'خیر'], justify='right')
-        # combo7.set("خیر")
+        combo7.set("خیر")
         label_combo7.grid(row=6, column=1, sticky='e')
         combo7.grid(row=6, column=0)
 
         # row 8, accessibility:
         # query_frame.rowconfigure(8)
         label_combo8 = Label(query_frame, text="دسترسی", pady=8, padx=10, font=self.font2)
-        combo8 = ttk.Combobox(query_frame, textvariable=self.accessibility_combo_str, state="readonly", font=self.font2)
+        combo8 = ttk.Combobox(query_frame, textvariable=self.accessibility_combo_str, state="readonly",
+                              font=self.font2)
         combo8.config(values=['سخت', 'آسان'], justify='right')
-        # combo8.set("آسان")
+        combo8.set("آسان")
         label_combo8.grid(row=7, column=1, sticky='e')
         combo8.grid(row=7, column=0)
 
         #   row 9, visibility:
         # query_frame.rowconfigure(9)
         label_combo9 = Label(query_frame, text="دیوار دید داشته باشد", pady=8, padx=10, font=self.font2)
-        combo9 = ttk.Combobox(query_frame, textvariable=self.visibility_combo_str, state="readonly", font=self.font2)
+        combo9 = ttk.Combobox(query_frame, textvariable=self.visibility_combo_str, state="readonly",
+                              font=self.font2)
         combo9.config(values=['خیر', 'بله'], justify='right')
-        # combo9.set("خیر")
+        combo9.set("خیر")
         label_combo9.grid(row=8, column=1, sticky='e')
         combo9.grid(row=8, column=0)
 
@@ -189,7 +221,6 @@ class Gui:
         button_predict.grid(row=9, column=0, columnspan=2, pady=(10, 0))
 
         query_frame.pack(side='right')
-
         # left side:
         predict_frame = LabelFrame(master, text="دیوار پیشنهادی", font=self.font1, fg='blue')
 
@@ -197,22 +228,21 @@ class Gui:
             predict_frame, font=self.font2,
             text="لطفا مقادیر ورودی را وارد کنید و سپس روی پیشنهاد کن کلیک نمایید",
             justify='right',
-            wraplength=250
+            wraplength=250,
         )
 
         wall_imag = PhotoImage(file="img/wall_frame.png")
         wall_imag_lbl = Label(predict_frame, image=wall_imag)
         wall_imag_lbl.imag = wall_imag
+
+        # pack everything to show:
+        loading(predict_frame, 2)
         wall_imag_lbl.pack(pady=5, padx=15)
         recommended_wall_lbl.pack(pady=5)
 
-        # from functools import partial
-        # action_with_arg = partial(self.predict_click_event, button_predict, recommended_wall_lbl)
-        # button_predict.config(command=action_with_arg)
-
         predict_frame.pack(side=LEFT, pady=(38, 0), padx=(20, 20), anchor='n')
 
-        'command button:'
+        # command button:
         from functools import partial
         action_with_arg = partial(self.predict_click_event, button_predict, recommended_wall_lbl)
         button_predict.config(command=action_with_arg)
@@ -249,22 +279,12 @@ class Gui:
 
         string_msg = "با توجه به مقادیر ورودی دیوار "
 
-        # todo: encoder:
-        if y == 1:
-            # label.config(text="دیوار پیش ساخته", image=label.img1, compound="left")
-            string_msg += "\" پیش ساخته \""
-        if y == 2:
-            # label.config(text="دیوار درجاریز", image=label.img2, compound="left""دیوار درجاریز")
-            string_msg += "\" درجاریز \""
-        if y == 3:
-            # label.config(text="سیم خاردار", image=label.img3, compound="left")
-            string_msg += "\" سیم خاردار \""
-        if y == 4:
-            # label.config(text="بدون حفاظ", image=label.img4, compound="left")
-            string_msg += "\" بدون حفاظ \""
-
+        # get the name of the predicted wall and add to the output message string:
+        wall_name = encode.decode_wall_name(y)
+        string_msg += "\"" + wall_name + "\""
         string_msg += " پیشنهاد می‌شود"
 
+        # change the labels text:
         def f():
             label['text'] = string_msg
 
