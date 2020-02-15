@@ -3,7 +3,8 @@ from tkinter import ttk
 import model_temp
 from encode import Encode
 from numpy import reshape
-import time
+from time import time as Time
+import random
 
 
 def set_footer(master):
@@ -18,30 +19,32 @@ def set_footer(master):
     master.config(image=master.img)
 
 
-def loading(master, t):
-    # get all frames in list:
-    frames = [PhotoImage(file="img/loading.gif", format='gif -index %i' % i) for i in range(8)]
+def loading(master_frame, time):
+    # hide all widgets in the frame:
+    for child in master_frame.winfo_children():
+        child.grid_remove()
 
-    load_img_lbl = Label(master)
-    load_img_lbl.image = frames  # prevent deleting by garbage collector.
-    load_img_lbl.pack(pady=(60, 0))
+    loading_lbl = master_frame.winfo_children()[0]  # the first child is loading label image.
+    loading_lbl.grid(row=0, column=0, padx=115, pady=(50, 196))  # show the loading.
 
-    tic = time.time()
+    tic = Time()
 
-    def animate(idx):
-        load_img_lbl.configure(image=frames[idx])
+    def animate(i):
+        loading_lbl.configure(image=loading_lbl.images[i])  # set the image with next frame.
 
-        idx = 0 if idx > 6 else idx + 1  # loop over i
+        i = 0 if i > 6 else i + 1  # reset and add up i (index). looping over the frames.
 
-        # remove the loading after 't':
-        toc = time.time()
+        # remove the loading after 'second's:
+        toc = Time()
         elapsed_time = toc - tic
-        if elapsed_time < t:
-            load_img_lbl.after(100, animate, idx)  # loop animation.
+        if elapsed_time < time:
+            loading_lbl.after(100, animate, i)  # loop animation.
         else:
-            load_img_lbl.pack_forget()
+            for child in master_frame.winfo_children():
+                child.grid()  # todo: what padding?
+            loading_lbl.grid_forget()  # hide the loading image.
 
-    animate(0)
+    animate(i=0)
 
 
 class Gui:
@@ -222,40 +225,45 @@ class Gui:
 
         query_frame.pack(side='right')
         # left side:
-        predict_frame = LabelFrame(master, text="دیوار پیشنهادی", font=self.font1, fg='blue')
+        predict_frame = LabelFrame(master, text="دیوار پیشنهادی", font=self.font1, fg='grey')
 
-        recommended_wall_lbl = Label(
-            predict_frame, font=self.font2,
-            text="لطفا مقادیر ورودی را وارد کنید و سپس روی پیشنهاد کن کلیک نمایید",
-            justify='right',
-            wraplength=250,
-        )
+        # Loading:
+        # -- get all frames in a list:
+        frames = [PhotoImage(file="img/loading.gif", format='gif -index %i' % i) for i in range(8)]
+        load_img_lbl = Label(predict_frame)
+        load_img_lbl.images = frames  # prevent deleting by garbage collector and further use at `loading` function.
 
+        # Wall picture:
         wall_imag = PhotoImage(file="img/wall_frame.png")
         wall_imag_lbl = Label(predict_frame, image=wall_imag)
-        wall_imag_lbl.imag = wall_imag
+        wall_imag_lbl.imag = wall_imag  # prevent deleting by garbage collector.
 
-        # pack everything to show:
-        loading(predict_frame, 2)
-        wall_imag_lbl.pack(pady=5, padx=15)
-        recommended_wall_lbl.pack(pady=5)
+        # Text wall
+        text_wall_lbl = Label(
+            predict_frame, font=self.font2,
+            text="لطفا مقادیر ورودی را وارد کنید و سپس روی پیشنهاد کلیک نمایید",
+            justify='right',
+            wraplength=250,
+            fg='red',
+        )
+
+        # pack everything to show: (using grid)
+        wall_imag_lbl.grid(row=1, column=0, pady=5, padx=15)
+        text_wall_lbl.grid(row=2, column=0, pady=5)
 
         predict_frame.pack(side=LEFT, pady=(38, 0), padx=(20, 20), anchor='n')
 
-        # command button:
+        # Command Button:
         from functools import partial
-        action_with_arg = partial(self.predict_click_event, button_predict, recommended_wall_lbl)
+        action_with_arg = partial(self.predict_click_event, predict_frame)
         button_predict.config(command=action_with_arg)
 
-    def predict_click_event(self, button, label):
-        # order: accessibility, defence, numForces, visibility, waterLevel, soil, topography, speed, importance.
-        wait = 100
-        # label.pack_forget()  # unvisible
-        label['text'] = ". . . "
-        # label.after(wait, lambda: label.pack())
-        button.config(state="disabled")
-        button.after(wait, lambda: button.config(state="normal"))
+    def predict_click_event(self, master_frame):
+        # randomize the waiting time:
+        millisecond = 1 / (random.randint(3, 10))
+        loading(master_frame, time=millisecond)
 
+        # order: accessibility, defence, numForces, visibility, waterLevel, soil, topography, speed, importance.
         entered_user_list = [
             self.accessibility_combo_str.get(),
             self.defence_combo_str.get(),
@@ -284,12 +292,9 @@ class Gui:
         string_msg += "\"" + wall_name + "\""
         string_msg += " پیشنهاد می‌شود"
 
-        # change the labels text:
-        def f():
-            label['text'] = string_msg
-
-        label.after(wait, f)
-        # label.config(text=string_msg)
+        # change the labels text to the predicted wall:
+        label = master_frame.winfo_children()[2]
+        label.config(text=string_msg, fg='black')
 
 
 if __name__ == '__main__':
@@ -297,7 +302,18 @@ if __name__ == '__main__':
     root = Tk()
     root.title('پیشنهاد دیوار انسدادی مرزی - سما')
     root.iconbitmap("img\\fav_e29_icon.ico")
-    root.geometry("600x680")
+
+    width = 600
+    height = 680
+    # get screen width and height:
+    width_screen = root.winfo_screenwidth()
+    # height_screen = root.winfo_screenheight()
+
+    # calculate x and y coordinates for the Tk root window
+    x = (width_screen - width) / 2
+    # y = (height_screen / 2) - (height / 2)
+
+    root.geometry("%dx%d+%d+%d" % (width, height, x, 10))
     root.resizable(0, 0)  # no resizable
 
     # change the style:
