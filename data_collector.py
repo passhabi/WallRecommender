@@ -53,7 +53,7 @@ for dir_name in os.listdir(root):
         try:
             assert (polls[-1].shape == polls[0].shape)
         except AssertionError:
-            raise ImportError(file_name + " doesn't fit")
+            raise ImportError(file_name + f" with size {polls[-1].shape}, doesn't fit to the {polls[0].shape}")
 
         # find the index of the weighted poll:
         if re.search('parsa', file_name) is not None:
@@ -89,6 +89,9 @@ for dir_name in os.listdir(root):
     for i in range(y_s.shape[0]):
         counted = dict(Counter(y_s[i, :]))
         top_vote = max(counted.items(), key=lambda x: x[1])
+        if prime_idx is None:
+            y.append(top_vote[0])
+            continue
         prime_vote = y_s[i][prime_idx]  # careful: with changing this.
 
         if prime_vote != top_vote[0]:
