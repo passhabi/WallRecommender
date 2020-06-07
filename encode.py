@@ -147,7 +147,7 @@ class Encode:
                 else:
                     if 'nan' != str(poll[i]):
                         print(
-                            "\033[91m" + f"Warning!! value '{poll[i]}' {type(poll[i])} in row {i} of"
+                            "\033[91m" + f"Warning!! value '{poll[i]}' {type(poll[i])} in row {i} of "
                                          f"the file {file_number} has been compromised." + "\033[0m")
                         # todo: warnings?
                     poll[i] = np.nan

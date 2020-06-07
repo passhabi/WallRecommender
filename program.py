@@ -44,7 +44,8 @@ def loading(master_frame, time):
                 child.grid()  # todo: what padding?
             loading_lbl.grid_forget()  # hide the loading image.
 
-    animate(i=0)
+    i = random.randint(0, 7)  # make the starting frame different each time.
+    animate(i)
 
 
 class Gui:
@@ -83,10 +84,10 @@ class Gui:
         footer_frame.pack()
 
         # import images:
-        # self.img1 = PhotoImage(file="img/pishsakhteh.png").subsample(2, 2)
-        # self.img2 = PhotoImage(file="img/darjariz.png").subsample(2, 2)
-        # self.img3 = PhotoImage(file="img/sim.png").subsample(2, 2)
-        # self.img4 = PhotoImage(file="img/bedonhefaz.png").subsample(2, 2)
+        self.img_precast_wall = PhotoImage(file="img/precast_wall.png").subsample(10, 8)
+        self.img_retaining_wall = PhotoImage(file="img/retaining_wall.png").subsample(2, 2)
+        self.img_barbed_wire = PhotoImage(file="img/barbed_wire.png").subsample(10, 8)
+        self.img_non_protection = PhotoImage(file="img/non_protection.png").subsample(2, 2)
 
     def set_header_content(self, master):
         """
@@ -236,7 +237,7 @@ class Gui:
         # Wall picture:
         wall_imag = PhotoImage(file="img/wall_frame.png")
         wall_imag_lbl = Label(predict_frame, image=wall_imag)
-        wall_imag_lbl.imag = wall_imag  # prevent deleting by garbage collector.
+        wall_imag_lbl.image = wall_imag  # prevent deleting by garbage collector.
 
         # Text wall
         text_wall_lbl = Label(
@@ -296,12 +297,41 @@ class Gui:
         label = master_frame.winfo_children()[2]
         label.config(text=string_msg, fg='black')
 
+        # set picture:
+        label_img = master_frame.winfo_children()[1]
+
+        if y == 1:
+            # label_img.config(image=self.img_precast_wall)
+            pass
+        if y == 2:
+            label_img.config(image=self.img_retaining_wall)
+        if y == 3:
+            # label_img.config(image=self.img_barbed_wire)
+            pass
+        if y == 4:
+            # label_img.config(image=self.img_non_protection)
+            pass
+
 
 if __name__ == '__main__':
     # set main specifications:
     root = Tk()
     root.title('پیشنهاد دیوار انسدادی مرزی - سما')
     root.iconbitmap("img\\fav_e29_icon.ico")
+
+    # about window:
+    def make_about_us():
+        window = Toplevel(root)
+        window.title('درباره ما')
+        
+
+    # menu:
+    root.option_add('*tearOff', False)
+    menubar = Menu(root)
+    root.config(menu=menubar)
+    help_ = Menu(menubar)
+    help_.add_command(label='درباره برنامه ', command=make_about_us)
+    menubar.add_cascade(menu=help_, label="راهنما")
 
     width = 600
     height = 680
@@ -314,7 +344,7 @@ if __name__ == '__main__':
     # y = (height_screen / 2) - (height / 2)
 
     root.geometry("%dx%d+%d+%d" % (width, height, x, 10))
-    root.resizable(0, 0)  # no resizable
+    # root.resizable(0, 0)  # no resizable
 
     # change the style:
     style = ttk.Style()
