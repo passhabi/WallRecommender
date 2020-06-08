@@ -116,4 +116,4 @@ for dir_name in os.listdir(root):
     else:
         final_df = pd.concat([final_df, df], ignore_index=True)
 
-final_df.to_excel('dataset.xlsx')
+final_df.to_excel('dataset.xlsx', index=False)

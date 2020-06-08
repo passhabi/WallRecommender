@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-import model_temp
+import model
 from encode import Encode
 from numpy import reshape
 from time import time as Time
@@ -284,7 +284,7 @@ class Gui:
         # print(translated_list)
         # print(x_test)
         x_test = reshape(x_test, [1, -1])
-        y = model_temp.ml.predict(x_test)[0]
+        y = model.fitted_model.predict(x_test)[0]
 
         string_msg = "با توجه به مقادیر ورودی دیوار "
 
