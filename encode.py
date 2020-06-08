@@ -28,18 +28,28 @@ class Encode:
     _trans_dict = {
         "آسان": "easy",
         "سخت": "difficult",
+
         "زیاد": "much",
-        # # "متوسط": "avg
         "کم": "few",
+
         "بله": "yes",
+        "متوسط": "yes",  # Change "defense" to "anti-explosion". No need for "average" anymore in dataset.
         "خیر": "no",
+
         "بالا": "high",
         "پایین": "low",
-        "سست": "weak",
-        "متراکم": "strong",
+
+        "سست": "loose",
+        "ضعیف": "loose",
+
+        "متراکم": "dense",
+        "قوی": "dense",
+
         "دشت": "plain",
         "کوهستانی": "mountain",
+        "کوهستان": "mountain",
         "تپه ماهور": "hill",
+
         "مدت دار": "long",
         "کوتاه مدت": "short",
     }
@@ -54,8 +64,8 @@ class Encode:
         "no": 0,
         "high": 1,
         "low": 0,
-        "weak": 1,
-        "strong": 0,
+        "loose": 1,
+        "dense": 0,
         "plain": 0,
         "mountain": 1,
         "hill": 2,
@@ -87,7 +97,10 @@ class Encode:
         """
         translated_list = []
         for entry in entry_list:
-            translated_list += [self._trans_dict[entry]]
+            try:
+                translated_list += [self._trans_dict[entry]]
+            except KeyError:
+                translated_list += [entry]  # dont change it.
         return translated_list
 
     def translate_word(self, word):
