@@ -15,11 +15,11 @@ df = df.apply(encode.encode_words)  # encoded to numbers.
 df = df.dropna()
 
 # split data: # todo: train and test set.
-x = df.iloc[:, :-1].values
-y = df.iloc[:, -1].values
+x = df.iloc[:, 1:].values
+y = df.iloc[:, 0].values
 
 
 # todo: run model in a loop for optimization.
 clf = tree.DecisionTreeClassifier()
 fitted_model = clf.fit(x, y)
-# y_hat = fitted_model.predict(x)
+y_hat = fitted_model.predict(x)
