@@ -84,10 +84,10 @@ class Gui:
         footer_frame.pack()
 
         # import images:
-        self.img_precast_wall = PhotoImage(file="img/precast_wall.png").subsample(10, 8)
-        self.img_retaining_wall = PhotoImage(file="img/retaining_wall.png").subsample(2, 2)
-        self.img_barbed_wire = PhotoImage(file="img/barbed_wire.png").subsample(10, 8)
-        self.img_non_protection = PhotoImage(file="img/non_protection.png").subsample(2, 2)
+        self.img_precast_wall = PhotoImage(file="img/precast_wall.png")
+        self.img_retaining_wall = PhotoImage(file="img/retaining_wall.png")
+        self.img_barbed_wire = PhotoImage(file="img/barbed_wire.png")
+        self.img_non_protection = PhotoImage(file="img/non_protection.png")
 
     def set_header_content(self, master):
         """
@@ -301,16 +301,13 @@ class Gui:
         label_img = master_frame.winfo_children()[1]
 
         if y == 1:
-            # label_img.config(image=self.img_precast_wall)
-            pass
+            label_img.config(image=self.img_precast_wall)
         if y == 2:
             label_img.config(image=self.img_retaining_wall)
         if y == 3:
-            # label_img.config(image=self.img_barbed_wire)
-            pass
+            label_img.config(image=self.img_barbed_wire)
         if y == 4:
-            # label_img.config(image=self.img_non_protection)
-            pass
+            label_img.config(image=self.img_non_protection)
 
 
 if __name__ == '__main__':
