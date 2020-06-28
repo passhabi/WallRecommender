@@ -1,6 +1,6 @@
 import re
 import numpy as np
-import math
+# import math
 
 
 def check_dim(testlist, dim=0):
@@ -31,7 +31,7 @@ class Encode:
 
         "زیاد": "much",
         "کم": "few",
-
+  
         "بله": "yes",
         "متوسط": "yes",  # Change "defense" to "anti-explosion". No need for "average" anymore in dataset.
         "خیر": "no",

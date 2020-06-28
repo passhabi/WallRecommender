@@ -201,7 +201,7 @@ class Gui:
 
         # row 8, accessibility:
         # query_frame.rowconfigure(8)
-        label_combo8 = Label(query_frame, text="دسترسی", pady=8, padx=10, font=self.font2)
+        label_combo8 = Label(query_frame, text="دست رسی", pady=8, padx=10, font=self.font2)
         combo8 = ttk.Combobox(query_frame, textvariable=self.accessibility_combo_str, state="readonly",
                               font=self.font2)
         combo8.config(values=['سخت', 'آسان'], justify='right')
@@ -320,7 +320,8 @@ if __name__ == '__main__':
     def make_about_us():
         window = Toplevel(root)
         window.title('درباره ما')
-        
+        version_lbl = ttk.Label(master=window, justify=CENTER, text="SAMA Wall Recommender\n version 1.0.2", background='gray')
+        version_lbl.pack(pady=(20, 10), padx=(10, 10))
 
     # menu:
     root.option_add('*tearOff', False)
@@ -341,7 +342,7 @@ if __name__ == '__main__':
     # y = (height_screen / 2) - (height / 2)
 
     root.geometry("%dx%d+%d+%d" % (width, height, x, 10))
-    # root.resizable(0, 0)  # no resizable
+    root.resizable(0, 0)  # no resizable
 
     # change the style:
     style = ttk.Style()
