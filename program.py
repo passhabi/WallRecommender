@@ -201,7 +201,7 @@ class Gui:
 
         # row 8, accessibility:
         # query_frame.rowconfigure(8)
-        label_combo8 = Label(query_frame, text="دست رسی", pady=8, padx=10, font=self.font2)
+        label_combo8 = Label(query_frame, text="دسترسی", pady=8, padx=10, font=self.font2)
         combo8 = ttk.Combobox(query_frame, textvariable=self.accessibility_combo_str, state="readonly",
                               font=self.font2)
         combo8.config(values=['سخت', 'آسان'], justify='right')

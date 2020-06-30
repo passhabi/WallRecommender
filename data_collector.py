@@ -64,6 +64,7 @@ for dir_name in os.listdir(root):
     columns_name = polls[0].columns[1:]
     x_df = polls[0][columns_name]
     y = []  # store the final result. (type of the wall)
+    y2 = []  # store the prime result.
 
     # pick up surveys answers, split the columns y of the all polls to a new variable called ys:
     y_s = np.array([])
@@ -91,6 +92,7 @@ for dir_name in os.listdir(root):
         top_vote = max(counted.items(), key=lambda x: x[1])
         if prime_idx is None:
             y.append(top_vote[0])
+            y2.append(None)
             continue
         prime_vote = y_s[i][prime_idx]  # careful: with changing this.
 
@@ -105,10 +107,13 @@ for dir_name in os.listdir(root):
         else:
             y.append(prime_vote)
 
+        y2.append(prime_vote)
+
     print("\033[94m" + f"number of disagreements: {disagreements}" + "\033[0m")
 
     # import math
-    df = pd.DataFrame(y, columns=['wall']).join(x_df)
+    df = pd.DataFrame({'wall': y, 'pwall': y2}).join(x_df)
+    # df = pd.DataFrame(y, columns=['wall']).join(x_df)
     # df['wall'] = df['wall'].apply(lambda x: x if math.isnan(x) else int(x))
 
     if final_df is None:
@@ -116,4 +121,4 @@ for dir_name in os.listdir(root):
     else:
         final_df = pd.concat([final_df, df], ignore_index=True)
 
-final_df.to_excel('dataset.xlsx', index=False)
+final_df.to_excel('dataset_with_prime.xlsx', index=False)
